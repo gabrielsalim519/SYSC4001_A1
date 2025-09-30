@@ -1,0 +1,73 @@
+0, 50, CPU execution
+50, 1, switch to kernel mode
+51, 5, context saved
+56, 1, find vector 7 in memory position 0x000E
+57, 1, load address 0x00BD into the PC
+58, 20, SYSCALL: run the ISR
+78, 122, transfer data
+200, 1, check for errors
+201, 1, IRET
+202, 1, check priority of interrupt
+203, 1, check if masked
+204, 1, switch to kernel mode
+205, 5, context saved
+210, 1, find vector 7 in memory position 0x000E
+211, 1, load address 0x00BD into the PC
+212, 140, END_IO
+352, 1, check for errors
+353, 1, IRET
+354, 100, CPU execution
+454, 1, switch to kernel mode
+455, 5, context saved
+460, 1, find vector 12 in memory position 0x0018
+461, 1, load address 0x03B9 into the PC
+462, 20, SYSCALL: run the ISR
+482, 115, transfer data to the display
+597, 1, check for errors
+598, 1, IRET
+599, 1, check priority of interrupt
+600, 1, check if masked
+601, 1, switch to kernel mode
+602, 5, context saved
+607, 1, find vector 12 in memory position 0x0018
+608, 1, load address 0x03B9 into the PC
+609, 133, END_IO
+742, 1, check for errors
+743, 1, IRET
+744, 20, CPU execution
+764, 1, switch to kernel mode
+765, 5, context saved
+770, 1, find vector 19 in memory position 0x0026
+771, 1, load address 0x0765 into the PC
+772, 20, SYSCALL: run the ISR
+792, 622, transfer data
+1414, 1, check for errors
+1415, 1, IRET
+1416, 1, check priority of interrupt
+1417, 1, check if masked
+1418, 1, switch to kernel mode
+1419, 5, context saved
+1424, 1, find vector 19 in memory position 0x0026
+1425, 1, load address 0x0765 into the PC
+1426, 640, END_IO
+2066, 1, check for errors
+2067, 1, IRET
+2068, 40, CPU execution
+2108, 1, switch to kernel mode
+2109, 5, context saved
+2114, 1, find vector 15 in memory position 0x001E
+2115, 1, load address 0x0584 into the PC
+2116, 20, SYSCALL: run the ISR
+2136, 38, transfer data to the display
+2174, 1, check for errors
+2175, 1, IRET
+2176, 1, check priority of interrupt
+2177, 1, check if masked
+2178, 1, switch to kernel mode
+2179, 5, context saved
+2184, 1, find vector 15 in memory position 0x001E
+2185, 1, load address 0x0584 into the PC
+2186, 56, END_IO
+2242, 1, check for errors
+2243, 1, IRET
+2244, 70, CPU execution
