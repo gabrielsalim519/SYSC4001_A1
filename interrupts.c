@@ -24,6 +24,7 @@ static int spend(FILE *output, int *current_time, int *remaining_time, int reque
     if (request_time < 0) {
         request_time = 0;
     }
+    
     int taken_time = (*remaining_time >= request_time) ? request_time : (*remaining_time > 0 ? *remaining_time : 0);
     fprintf(output, "%d, %d, %s\n", *current_time, taken_time, event_occurence);
     *current_time += taken_time;
@@ -42,9 +43,6 @@ void handle_interrupt(int interrupt_num, int *current_time, FILE *output, const 
     const int error_time = 1;   
     const int iret_time = 1;
     const int isr_used_time = 20;
-
-    // const double isr_remaining_time_ratio = 0.40;
-    // const double data_remaining_time_ratio = 0.60;
 
     int remaining_operation_time = total_time;
     
@@ -84,6 +82,7 @@ void handle_interrupt(int interrupt_num, int *current_time, FILE *output, const 
         snprintf(buf2, sizeof(buf2), "load address 0x%04X into the PC", (unsigned)isr_address);
         spend(output, current_time, &remaining_operation_time, load_address_time, buf2);
     } 
+    
     else {
         fprintf(output, "%d, %d, interrupt number %d not found in vector table\n", *current_time, 0, interrupt_num);
     }
@@ -97,13 +96,8 @@ void handle_interrupt(int interrupt_num, int *current_time, FILE *output, const 
     if (is_endio) {
         spend(output, current_time, &remaining_operation_time, payload, "END_IO");
     } 
-    /////////////////////////////////////////////////////////////////////////////
-    else if (is_syscall) {
-        
-        // double main_operation_remaining_time = isr_remaining_time_ratio + data_remaining_time_ratio;
-        // double weighted_operation_avg = (main_operation_remaining_time > 0.0) ? (isr_remaining_time_ratio / main_operation_remaining_time) : 0.0;
-        // int isr_time = (int)(payload * weighted_operation_avg);
-        
+
+    else if (is_syscall) {        
         int isr_time;
         int transfer_time = payload - isr_used_time;
 
@@ -111,8 +105,8 @@ void handle_interrupt(int interrupt_num, int *current_time, FILE *output, const 
             isr_time = payload;
             transfer_time = 0;
         }
-        else
-        {
+
+        else {
             isr_time = isr_used_time;
         }
 
@@ -121,7 +115,7 @@ void handle_interrupt(int interrupt_num, int *current_time, FILE *output, const 
         spend(output, current_time, &remaining_operation_time, transfer_time, transfer_alternate);
         *toggle = !*toggle;
     } 
-    /////////////////////////////////////////////////////////////////////////////
+
     spend(output, current_time, &remaining_operation_time, error_time, "check for errors");
     spend(output, current_time, &remaining_operation_time, iret_time,  "IRET");
 }
@@ -144,11 +138,13 @@ void process_trace(FILE *trace, FILE *output) {
                 fprintf(output, "%d, %d, CPU execution\n", current_time, duration);
                 current_time += duration;
             } 
+
             else if (strncmp(activity_with_num, "SYSCALL", 7) == 0) {
                 int interrupt_num = value;                   
                 int duration = get_allocated_time(interrupt_num);
                 handle_interrupt(interrupt_num, &current_time, output, "SYSCALL", &toggle, duration);
             } 
+
             else if (strncmp(activity_with_num, "END_IO", 6) == 0) {
                 int interrupt_num = value;                  
                 int duration = get_allocated_time(interrupt_num);
@@ -171,6 +167,7 @@ int main(void) {
         fclose(trace);
         return EXIT_FAILURE;
     }
+
     process_trace(trace, output);
     fclose(trace);
     fclose(output);
